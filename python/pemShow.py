@@ -67,8 +67,8 @@ def show_line(udf,gpos,lpos,frame,l,d,color):
     p2=gpos+(lpos-l*d)@frame
     udf.line(p1.tolist(),p2.tolist(),color)
 
-def show_point(udf,gpos,lpos,color):
-    udf.point((gpos+lpos).tolist(),color)
+def show_point(udf,gpos,lpos,frame,color):
+    udf.point((gpos+lpos@frame).tolist(),color)
 
 def show_mesh(udf,gpos,lpos,frame,vertex,face,color):
     vpos=[]
@@ -139,7 +139,7 @@ def show_body(udf,body_id,gpos,frame,normal=False):
             d=np.array(udf.get(sloc+".line.d"))
             show_line(udf,gpos,lpos,frame,l,d,color)
         elif s=="point":
-            show_point(udf,gpos,lpos,color)
+            show_point(udf,gpos,lpos,frame,color)
         elif s=="mesh":
             vertex=np.array(udf.get(sloc+".mesh.vertex[].position"))
             face=udf.get(sloc+".mesh.face[].vertex[]")
