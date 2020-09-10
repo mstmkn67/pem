@@ -12,3 +12,5 @@ pem -I inputfile -O outputfile
 たとえば、
 pem -I pendulum.udf -O pendulum_o.udf
 のようにです。
+
+サンプルやマニュアルは、製作中です
