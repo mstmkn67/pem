@@ -3,14 +3,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.special import ellipk,ellipj
 
-def const_k_linear(g,l,theta0):
-	E=0.5*g*theta0**2/l
-	k2=0.5*l*E/g
+def const_k_linear(theta0):
+	k2=0.25*theta0*theta0
 	return np.sqrt(k2)
 
 def const_k_exact(g,l,theta0):
-	E=g*(1.0-np.cos(theta0))/l
-	k2=0.5*l*E/g
+	k2=0.5*(1-np.cos(theta0))
 	return np.sqrt(k2)
 
 def period_linear(l,g):
@@ -36,7 +34,7 @@ ax=plt.subplot(211)
 df=pd.read_csv("angle.dat",sep=' ', header=None)
 for i,(theta0,color) in enumerate(zip(theta0s,colors),1):
 	ax.plot(df.loc[::10,0],df.loc[::10,i],label=str(theta0)+" simulation",linestyle="",marker='o',color=color)
-	k=const_k_linear(g,l,np.deg2rad(theta0))
+	k=const_k_linear(np.deg2rad(theta0))
 	T=period_linear(l,g)
 	theta=angle_linear(df.loc[:,0].values,k,T,l,g)
 	ax.plot(df.loc[:,0],theta,label=str(theta0)+" linear solution",linestyle="-",color=color)
