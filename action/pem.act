@@ -1,0 +1,15 @@
+
+action body[].shape[].mesh:input(stlfile="[...]",vertex_start_id=0,face_start_id=0):\begin
+from pemReadStl import read_stl
+vertex,face=read_stl(stlfile)
+[bi,si]=Location("self").getIndex()
+loc="body[{}].shape[{}].mesh".format(bi,si)
+v0=vertex_start_id
+for i in range(v0,v0+len(vertex)):
+    vloc=loc+".vertex[{}]".format(i)
+    _udf_.put([i,vertex[i].tolist()],vloc)
+f0=face_start_id
+for i in range(f0,f0+len(face)):
+    floc=loc+".face[{}]".format(i)
+    _udf_.put([i,face[i]],floc)
+\end

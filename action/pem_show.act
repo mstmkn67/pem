@@ -1,0 +1,74 @@
+action body[]:show(bodyDraw="true|false",dipoleDraw="false|true"):\begin
+import numpy as np
+import pemShow as ps
+#point([0,0,0],1) #origin
+if bodyDraw=="true":
+    gpos=np.zeros(3)
+    frame=np.eye(3)
+    id=get(Location("self").down("id"))
+    ps.show_body(_udf_,id,gpos,frame)
+#dipole
+if dipoleDraw=="true":
+    p=get(Location("self").down("magnet[].position"))
+    d=get(Location("self").down("magnet[].dipole"))
+    ps.draw_dipoles(_udf_,p,d,1,[0,0,0,1])
+\end
+
+action simulation:show():\begin
+import numpy as np
+import pemShow as ps
+#point([0,0,0],1) #origin
+### simulation system
+smin=$simulation.systemSize.min
+smax=$simulation.systemSize.max
+ps.draw_frame(_udf_,smin,smax,[0,0,0,1])
+### pendulum
+ids=$simulation.pendulum[].body
+poss=$simulation.pendulum[].position
+frames=$simulation.pendulum[].orientation
+for i,j,k in zip(ids,poss,frames):
+    ps.show_body(_udf_,i,j,k)
+### body
+ids=$simulation.body[].body
+poss=$simulation.body[].position
+frames=$simulation.body[].orientation
+for i,j,k in zip(ids,poss,frames):
+    ps.show_body(_udf_,i,j,k)
+\end
+
+action simulationResult:show(pendulumDraw="true|false",bodyDraw="true|false",dipoleDraw="false|true"):\begin
+import numpy as np
+import pemShow as ps
+import itertools as it
+#point([0,0,0],1) #origin
+### simulation system
+smin=$simulation.systemSize.min
+smax=$simulation.systemSize.max
+ps.draw_frame(_udf_,smin,smax,[0,0,0,1])
+### pendulum
+if pendulumDraw=="true":
+    ids=$simulation.pendulum[].body
+    poss=$simulation.pendulum[].position
+    frames=$simulationResult.pendulum[].orientation
+    for i,j,k in zip(ids,poss,frames):
+        ps.show_body(_udf_,i,j,k)
+### body
+if bodyDraw=="true":
+    ids=$simulation.body[].body
+    poss=$simulationResult.body[].position
+    frames=$simulationResult.body[].orientation
+    for i,j,k in zip(ids,poss,frames):
+        ps.show_body(_udf_,i,j,k)
+### dipole
+if dipoleDraw=="true":
+    p=$simulationResult.pendulum[].magnet[].position
+    d=$simulationResult.pendulum[].magnet[].dipole
+    p=list(it.chain.from_iterable(p))
+    d=list(it.chain.from_iterable(d))
+    ps.draw_dipoles(_udf_,p,d,1,[0,0,0,1])
+    p=$simulationResult.body[].magnet[].position
+    d=$simulationResult.body[].magnet[].dipole
+    p=list(it.chain.from_iterable(p))
+    d=list(it.chain.from_iterable(d))
+    ps.draw_dipoles(_udf_,p,d,1,[0,0,0,1])
+\end

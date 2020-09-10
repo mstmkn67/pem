@@ -1,0 +1,78 @@
+  \documentclass[a4paper,11pt]{jbook}
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+\usepackage{amssymb}
+\usepackage{amsmath}
+%\usepackage{here}
+\def\vecR {\bm {\mathcal {R} } }
+\def\R  {\mathcal {R} }
+\pagestyle{plain}
+\title{磁石振り子シミュレータ\\PEM}
+\author{牧野真人}
+\date{\today}
+\begin{document}
+\maketitle
+\tableofcontents 
+ %%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{はじめに}
+シミュレーションエンジンPEMについての説明をする。
+PEMは力学に関してのシミュレーションを行う。
+力学のシミュレーションであるから、力$F$を受ける質量$m$の物体が加速度$a$で運動するニュートンの運動方程式
+\begin{equation}
+ma=F
+\end{equation}
+が基礎になる。
+しかし、PEMでは、回転の運動方程式を中心に解く。
+コマ、振り子のように、一様重力場中で一固定点を持った剛体の回転の問題を解く。
+特に、剛体は、磁石を持つとして、磁気ダイポールをもっており、外磁場やダイポール同士で相互作用する。
+
+剛体の運動は、オイラー角あるいは、四元数を用いて計算されることが多いがPEMでは、粒子固定の直交座標系$\bm{u}_1,\bm{u}_2,\bm{u}_3$を計算していく。
+厳密解を解くなどの場合は、オイラー角は有用であるし、四元数は、分子動力学シミュレーションのような多数の多体問題を解く場合は効率が高い。
+一方で、私の感覚であるが、粒子固定の直交座標系で計算する場合は、分かりやすい。
+そのため、ここでは、粒子固定の直交座標系を用いる。
+
+さらに、他に見られない特徴として回転微分演算子
+\begin{equation}
+\vecR =\sum_{i=1,2,3}\bm{u}_i\times\frac{\partial}{\partial \bm{u}_i}
+\end{equation}
+を用いる。
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{記号など}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{理論}
+\section{基礎方程式}
+実験室が基底ベクトル$\bm{e}_x, \bm{e}_y,\bm{e}_z $で記述される空間とする。
+ここで、$\bm{e}_i\cdot\bm{e}_j=\delta_{ij}, (i,j=x,y,z)$である。右手系として$\bm{e}_i\times\bm{e}_j=e_{ijk}\bm{e}_k$である。
+ある一体の剛体を考える。この剛体は剛体に固定された基底ベクトル$\bm{u}_1,\bm{u}_2,\bm{u}_3$で剛体の方向を定義する。
+この場合も$\bm{u}_i\cdot\bm{u}_j=\delta_{ij}, (i,j=1,2,3)$である。
+トルク$\bm{T}$が与えられた際、角運動量$\bm{L}$の時間微分で与えられる。
+\begin{equation}
+\frac{d\bm{L}}{dt}=\bm{T}
+\end{equation}
+また、剛体の角速度$\bm{\omega}$は、剛体の慣性モーメントテンソル$\bm{I}$として
+\begin{equation}
+\bm{I}\cdot\bm{\omega}=\bm{L}
+\end{equation}
+となる。
+慣性モーメントテンソルは、時間に応じて変化する。
+しかし、慣性モーメントテンソルはあらかじめ、粒子に固定した座標系で計算するほうが便利である。
+そのため、慣性モーメントテンソルは、次のようにする。
+\begin{equation}
+\bm{I}(t)=\sum_{i,j=1,2,3}I_{ij}\bm{u}_i(t)\bm{u}_j(t)
+\end{equation}
+$I_{ij}$は時間に依存しない定数である。粒子固定の座標系で最初に求めておけばよい。
+一方で、行列$I_{ij}$の逆行列を$(I^{-1})_{ij}$とすると角速度は
+ \begin{equation}
+ \bm{\omega}=\sum_{i,j=1,2,3}(I^{-1})_{ij}\bm{L}\cdot\bm{u}_i\bm{u}_j
+ \end{equation}
+ となる。
+ これから、
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{シミュレーション方法}
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{}
+ 
+  \end{document}
+

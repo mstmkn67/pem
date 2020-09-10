@@ -1,0 +1,58 @@
+action body[]:analyze(): \begin
+import numpy as np
+import pemInertiaMoment as pim
+bloc=Location("self")
+sloc=Location("self").down("shape[0]")
+n=size(Location("self").down("shape[]"))
+IM=np.zeros((3,3))
+COM=np.zeros(3)
+MM=0.0
+for i in range(n):
+    lpos=np.array(get(sloc.str()+".center"))
+    mass=np.array(get(sloc.str()+".mass"))
+    s=get(sloc.str()+".shape")
+    ii=np.zeros((3,3))
+    if s=="sphere":
+        a=get(sloc.str()+".sphere.radius")
+        ii=pim.sphere(mass,a)
+    elif s=="cylinder":
+        a=get(sloc.str()+".cylinder.radius")
+        h=get(sloc.str()+".cylinder.length")
+        d=np.array(get(sloc.str()+".cylinder.d"))
+        ii=pim.cylinder(mass,a,h,d)
+    elif s=="ellipsoid":
+        a=get(sloc.str()+".ellipsoid.a")
+        b=get(sloc.str()+".ellipsoid.b")
+        c=get(sloc.str()+".ellipsoid.c")
+        da=np.array(get(sloc.str()+".ellipsoid.da"))
+        db=np.array(get(sloc.str()+".ellipsoid.db"))
+        dc=np.cross(da,db)
+        ii=pim.ellipsoid(mass,a,b,c,da,db)
+    elif s=="cuboid":
+        a=get(sloc.str()+".cuboid.a")
+        b=get(sloc.str()+".cuboid.b")
+        c=get(sloc.str()+".cuboid.c")
+        da=np.array(get(sloc.str()+".cuboid.da"))
+        db=np.array(get(sloc.str()+".cuboid.db"))
+        dc=np.cross(da,db)
+        ii=pim.cuboid(mass,a,b,c,da,db)
+    elif s=="line":
+        l=get(sloc.str()+".line.l")
+        d=np.array(get(sloc.str()+".line.d"))
+        ii=pim.line(mass,l,d)
+    elif s=="point":
+        ii=pim.point(mass)
+    elif s=="mesh":
+        vertex=np.array(get(sloc.str()+".mesh.vertex[].position"))
+        face=get(sloc.str()+".mesh.face[].vertex[]")
+        ii=pim.mesh(mass,vertex,face)
+    IM+=pim.translate(lpos,mass,ii)
+    COM+=mass*lpos
+    MM+=mass
+    sloc.next()
+put(MM,bloc.str()+".analysis.mass")
+COM/=MM
+put(COM.tolist(),bloc.str()+".analysis.massCenter")
+ii=[IM[0][0],IM[1][1],IM[2][2],IM[1][0],IM[2][0],IM[2][1]]
+put(ii,bloc.str()+".analysis.inertiaMoment")
+\end

@@ -1,0 +1,198 @@
+\begin{header}
+\begin{def}
+	EngineType:string;
+	EngineVersion:string;
+	IOType:string;
+	ProjectName:string;
+	Comment:string;
+	Action:string;
+\end{def}
+\begin{data}
+EngineType:"pem"
+EngineVersion:"1.2"
+IOType:"INOUT"
+ProjectName:""
+Comment:"UDF definition file for magnetic pendulums"
+Action:"pem.act;pem_show.act;pem_analyzer.act"
+\end{data}
+\end{header}
+
+\begin{unit}
+[Length]= {$unitParameter.length} [m]
+[Mass] = {$unitParameter.mass} [kg]
+[Time] = {$unitParameter.time} [s]
+[Ampere] = {$unitParameter.ampere} [A]
+\end{unit}
+
+\begin{def}
+class Vector3d:{x:double [unit],y:double [unit],z:double[unit]}[unit]
+class SymMat3x3:{
+	xx:double[unit],yy:double[unit],zz:double[unit]
+	yx:double[unit],zx:double[unit],zy:double[unit]
+}[unit]
+
+class Vertex:{
+	id:ID
+	position:Vector3d[Length]
+}
+class Face:{
+	id:ID
+	vertex[]:<Vertex,ID>
+}
+
+class Body:{
+	id:ID
+	shape[]:{
+		center:Vector3d[Length]
+		mass:double[Mass]
+		shape:select{"sphere","cylinder","ellipsoid","cuboid","mesh","line","point"}
+		sphere:{
+			radius:double[Length]
+		}
+		cylinder:{
+			radius:double[Length]
+			length:double[Length]
+			d:Vector3d[Length] // direction of cylinder axis
+		}
+		ellipsoid:{
+			a:double[Length] //half length
+			b:double[Length] //half length
+			c:double[Length] //half length
+			da:Vector3d[Length] //direction of length a 
+			db:Vector3d[Length] //direction of length b
+		}
+		cuboid:{
+			a:double[Length] //half length
+			b:double[Length] //half length
+			c:double[Length] //half length
+			da:Vector3d[Length] // direction of length a 
+			db:Vector3d[Length] // direction of length b
+		}
+		mesh:{
+			vertex[]:Vertex
+			face[]:Face
+		}
+		line:{
+			l:double[Length] //half length
+			d:Vector3d[Length] // direction of line
+		}
+	}
+	magnet[]:{
+		center:Vector3d[Length]
+		dipole:Vector3d[Ampere*Length^2]
+	}
+	color[]:{red:double,green:double,blue:double,trans:double}
+	analysis:{
+		mass:double[Mass]
+		massCenter:Vector3d[Length]
+		inertiaMoment:SymMat3x3[Mass*Length^2]
+	}
+}
+
+\end{def}
+
+\begin{global_def}
+unitParameter: {
+	length: double [m] 
+	mass: double [kg]
+	time: double [s]
+	ampere:double [A]
+}
+body[]:Body
+simulation:{
+	time:{
+		simulationSteps:int
+		reportSteps:int
+		dt:double[Time]
+	}
+	integrator:select{"4thOrderRungeKutta","Euler"}
+
+	pendulum[]:{
+		body:<Body,ID>
+		position:Vector3d[Length]
+		orientation:{
+			u1:Vector3d
+			u2:Vector3d
+			u3:Vector3d
+		}
+		angularVelocity:Vector3d[1/Time]
+		constraint:{
+			flag:select{"false","true"}
+			rotationAxis:Vector3d
+		}
+	}
+	body[]:{
+		body:<Body,ID>
+		position:Vector3d[Length]
+		orientation:{
+			u1:Vector3d
+			u2:Vector3d
+			u3:Vector3d
+		}
+		type:select{"fixed","constantVelocity","ellipticRotation"}
+		constantVelocity:{
+			velocity:Vector3d[Length/Time]
+			//center:Vector3d[Length]
+			//angularVelocity:Vector3d[1/Time]
+		}
+		ellipticRotation:{
+			center:Vector3d[Length]
+			initialPhase:double
+			angularVelocity:double[1/Time]
+			r1:Vector3d[Mass/Ampere/Time^2]
+			r2:Vector3d[Mass/Ampere/Time^2]
+		}
+	}
+	gravity:Vector3d[Length/Time^2]
+	magnetiField:{
+		fieldType:select{"false","constantField",
+		                  "ellipticRotationField"}
+		constantField:{
+			B:Vector3d[Mass/Ampere/Time^2]
+		}
+		ellipticRotationField:{
+			angularVelocity:double[1/Time]
+			B1:Vector3d[Mass/Ampere/Time^2]
+			B2:Vector3d[Mass/Ampere/Time^2]
+		}
+	}
+	freeSpacePermeability:double[Mass*Length/Time^2/Ampere^2]
+	PseudoFrictionTorque:{
+		flag:select{"false","true"}
+		coefficient:double[Time/Mass/Length^2]
+	}
+}
+\end{global_def}
+\begin{def}
+simulationResult:{
+	pendulum[]:{
+		orientation:{
+			u1:Vector3d
+			u2:Vector3d
+			u3:Vector3d
+		}
+		angularVelocity:Vector3d[1/Time]
+		angularMomentum:Vector3d[Mass*Length^2/Time]
+		torque:Vector3d[Mass*Length^2/Time^2]
+		magnet[]:{
+			center:Vector3d[Length]
+			dipole:Vector3d[Ampere*Length^2]
+		}
+	}
+	body[]:{
+		position:Vector3d[Length]
+		orientation:{
+			u1:Vector3d
+			u2:Vector3d
+			u3:Vector3d
+		}
+		magnet[]:{
+			center:Vector3d[Length]
+			dipole:Vector3d[Ampere*Length^2]
+		}		
+	}
+	gravity:Vector3d[Length/Time^2]
+	magnetiField:Vector3d[Mass/Ampere/Time^2]
+	cpuTime:double [s]
+}
+\end{def}
