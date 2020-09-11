@@ -1,4 +1,62 @@
 import numpy as np
+from UDFManager import *
+import copy
+
+def analyzer(udf,ibody):
+    bloc=Location("body[]",[ibody])
+    n=udf.size(bloc.str()+".shape[]")
+    sloc=Location(bloc.str()+".shape[0]")
+    IM=np.zeros((3,3))
+    COM=np.zeros(3)
+    MM=0.0
+    for i in range(n):
+        lpos=np.array(udf.get(sloc.str()+".center"))
+        mass=np.array(udf.get(sloc.str()+".mass"))
+        s=udf.get(sloc.str()+".shape")
+        ii=np.zeros((3,3))
+        if s=="sphere":
+            a=udf.get(sloc.str()+".sphere.radius")
+            ii=sphere(mass,a)
+        elif s=="cylinder":
+            a=udf.get(sloc.str()+".cylinder.radius")
+            h=udf.get(sloc.str()+".cylinder.length")
+            d=np.array(udf.get(sloc.str()+".cylinder.d"))
+            ii=cylinder(mass,a,h,d)
+        elif s=="ellipsoid":
+            a=udf.get(sloc.str()+".ellipsoid.a")
+            b=udf.get(sloc.str()+".ellipsoid.b")
+            c=udf.get(sloc.str()+".ellipsoid.c")
+            da=np.array(udf.get(sloc.str()+".ellipsoid.da"))
+            db=np.array(udf.get(sloc.str()+".ellipsoid.db"))
+            dc=np.cross(da,db)
+            ii=ellipsoid(mass,a,b,c,da,db)
+        elif s=="cuboid":
+            a=udf.get(sloc.str()+".cuboid.a")
+            b=udf.get(sloc.str()+".cuboid.b")
+            c=udf.get(sloc.str()+".cuboid.c")
+            da=np.array(udf.get(sloc.str()+".cuboid.da"))
+            db=np.array(udf.get(sloc.str()+".cuboid.db"))
+            dc=np.cross(da,db)
+            ii=cuboid(mass,a,b,c,da,db)
+        elif s=="line":
+            l=udf.get(sloc.str()+".line.l")
+            d=np.array(udf.get(sloc.str()+".line.d"))
+            ii=line(mass,l,d)
+        elif s=="point":
+            ii=point(mass)
+        elif s=="mesh":
+            vertex=np.array(udf.get(sloc.str()+".mesh.vertex[].position"))
+            face=udf.get(sloc.str()+".mesh.face[].vertex[]")
+            ii=mesh(mass,vertex,face)
+        IM+=translate(lpos,mass,ii)
+        COM+=mass*lpos
+        MM+=mass
+        sloc.next() 
+    udf.put(MM,bloc.str()+".analysis.mass")
+    COM/=MM
+    udf.put(COM.tolist(),bloc.str()+".analysis.massCenter")
+    ii=[IM[0][0],IM[1][1],IM[2][2],IM[1][0],IM[2][0],IM[2][1]]
+    udf.put(ii,bloc.str()+".analysis.inertiaMoment")
 
 def sphere(m=1.0,a=1.0):
 	return 0.4*m*a*a*np.eye(3)

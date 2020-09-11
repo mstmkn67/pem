@@ -13,3 +13,31 @@ for i in range(f0,f0+len(face)):
     floc=loc+".face[{}]".format(i)
     _udf_.put([i,face[i]],floc)
 \end
+
+
+action simulation.pendulum[]:pendulums_delete():\begin
+$simulation.pendulum[]=[]
+\end
+
+action simulation.body[]:bodies_delete():\begin
+$simulation.body[]=[]
+\end
+
+action simulation.pendulum[]:pendulums_insert(Size=1,Body_id=0):\begin
+begin_n=size("simulation.pendulum[]")
+for i in range(begin_n,begin_n+Size):
+    $simulation.pendulum[i].body=Body_id
+    $simulation.pendulum[i].position=[0.0,0.0,0.0]
+    $simulation.pendulum[i].orientation=[[1,0,0],[0,1,0],[0,0,1]]
+    $simulation.pendulum[i].angularVelocity=[0.0,0.0,0.0]
+    $simulation.pendulum[i].constraint.flag="false"
+\end
+
+action simulation.body[]:bodies_insert(Size=1,Body_id=0):\begin
+begin_n=size("simulation.body[]")
+for i in range(begin_n,begin_n+Size):
+    $simulation.body[i].body=Body_id
+    $simulation.body[i].position=[0.0,0.0,0.0]
+    $simulation.body[i].orientation=[[1,0,0],[0,1,0],[0,0,1]]
+    $simulation.body[i].type="fixed"
+\end
