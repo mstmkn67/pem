@@ -50,6 +50,7 @@ ma=F
 トルク$\bm{T}$が与えられた際、角運動量$\bm{L}$の時間微分で与えられる。
 \begin{equation}
 \frac{d\bm{L}}{dt}=\bm{T}
+\label{eq:dLdt}
 \end{equation}
 また、剛体の角速度$\bm{\omega}$は、剛体の慣性モーメントテンソル$\bm{I}$として
 \begin{equation}
@@ -66,10 +67,26 @@ $I_{ij}$は時間に依存しない定数である。粒子固定の座標系で
 一方で、行列$I_{ij}$の逆行列を$(I^{-1})_{ij}$とすると角速度は
  \begin{equation}
  \bm{\omega}=\sum_{i,j=1,2,3}(I^{-1})_{ij}\bm{L}\cdot\bm{u}_i\bm{u}_j
+ \label{eq:omega}
  \end{equation}
  となる。
  これから、
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+\frac{d\bm{u}_i}{dt}=\bm{\omega}\times\bm{u}_i
+\label{eq:dudt}
+\end{equation}
+となる。
+
+トルク$\bm{T}$が与えられると式\eqref{eq:dLdt}より角運動量$\bm{L}$の時間発展を計算する。
+次にあらかじめ計算していた慣性モーメントテンソル$I_{ij}$をもとに、式\eqref{eq:omega}より角速度$\bm{\omega}$を計算する。
+そして、式\eqref{eq:dudt}より、剛体に固定された基底ベクトル$\bm{u}_i$を計算することで粒子の向きが計算されていく。
+このようにして、剛体の運動を計算していくのが、本シミュレータである。
+\section{慣性モーメントテンソル}
+慣性モーメントテンソルは、
+\begin{equation}
+\bm{I}=\rho\int_V\left(r^2\bm{\delta}-\bm{r}\bm{r}\right)dV
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{シミュレーション方法}
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{}
