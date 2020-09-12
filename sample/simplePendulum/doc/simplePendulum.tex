@@ -1,0 +1,60 @@
+\documentclass[a4paper,11pt]{jarticle}
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\def\vecR {\bm {\mathcal {R} } }
+\def\R  {\mathcal {R} }
+\pagestyle{plain}
+\title{単純な振り子}
+\author{牧野真人}
+\date{\number\year 年\number\month 月\number\day 日}
+\begin{document}
+\maketitle
+%%%%%%%%%%%%
+\section{理論}
+長さ$l$で重力場$g$にある平面内にある振り子は、重力と振り子がなす角度を$\theta$とすると次の方程式で書ける。
+\begin{equation}
+\frac{d^2\theta}{dt^2}=-\frac{g}{l}\sin\theta
+\label{eq:basic}
+\end{equation}
+%%%%%%%%%%%%%%
+\subsection{線形の解}
+角度$\theta$が十分に小さければ、
+\begin{equation}
+\frac{d^2\theta}{dt^2}=-\frac{g}{l}\theta
+\end{equation}
+となる。
+定数$k$を
+\begin{equation}
+k^2=\frac{\theta_0^2}{4}
+\end{equation}
+とする。ただし初期の角度は$\theta_0$で、このときの速度はゼロとする。
+振り子の周期$T$は、
+\begin{equation}
+T=2\pi\sqrt{\frac{l}{g}}
+\end{equation}
+で、角度$\theta$は
+\begin{equation}
+\theta=2k\sin\left\{\sqrt\frac{g}{l}\left(t+\frac{T}{4}\right)\right\}
+\end{equation}
+となる。
+%%%%%%%%%%%%%%%%
+\subsection{厳密解}
+式\eqref{eq:basic}の厳密解は、定数$k$や周期$T$を
+\begin{equation}
+k^2=\frac12\left(1-\cos\theta_0\right)
+\end{equation}
+および
+\begin{equation}
+T=4\sqrt{\frac{l}{g}}K(k)
+\end{equation}
+として
+\begin{equation}
+\theta=2\sin^{-1}\left[k \mbox{sn}\left\{\sqrt{\frac{g}{l}}\left(t+\frac{T}{4}\right),k\right\}\right]
+\end{equation}
+となる。ここで$K(k)$は、母数$k$の第１種完全楕円積分であり、$\mbox{sn}(u,k)$は、母数$k$におけるヤコビのsn楕円関数である。
+\section{シミュレーション}
+\end{document}
