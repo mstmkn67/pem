@@ -1,5 +1,6 @@
   \documentclass[a4paper,11pt]{jbook}
-\usepackage{graphicx}% Include figure files
+%\usepackage{graphicx}% Include figure files
+\usepackage[dvipdfmx]{graphicx}
 \usepackage{dcolumn}% Align table columns on decimal point
 \usepackage{bm}% bold math
 \usepackage{amssymb}
@@ -399,6 +400,20 @@ $t^1=t$として、
  \bm{\omega}(t+\Delta t)=\sum_{i,j=1,2,3}(I^{-1})_{ij}\bm{L}(t+\Delta t)\cdot\bm{u}_i(t+\Delta t)\bm{u}_j(t+\Delta t)
 \end{equation}
 と計算する。
+
+図\ref{fig:4_2_2_integrator}で、オイラー法と4次のルンゲクッタ法の比較である。
+楕円体の重心のまわりでの自由回転である。
+エネルギー保存と角運動量保存から、剛体から見た角運動量の軌跡は閉じたものになる。
+特に不安定な軌跡を選んで比較した。
+図の左はオイラー法の軌跡で、最初の軌跡から計算の誤差から別の閉じた軌跡に移動している。
+図の右は、ルンゲクッタ法の結果で閉じた軌跡になっている。
+この結果の通り、精度によっては、間違った結果となるのを気をつける必要がある。
+\begin{figure}[h]
+\centering
+  \includegraphics[clip,width=1.0\linewidth]{pict/4_2_2_integrator.png}
+  \caption{オイラー法と4次のルンゲクッタ法との比較。左がオイラー法、右が4次のルンゲクッタ法。}
+  \label{fig:4_2_2_integrator}
+\end{figure}
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  \chapter{操作例}
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
