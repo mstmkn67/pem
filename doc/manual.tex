@@ -39,21 +39,51 @@ ma=F
 \end{equation}
 を用いる。
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{記号など}
+\chapter{記号の説明}
 このマニュアルでは、スカラー量は、通常のフォントで$A$のように書く。
 ベクトル、テンソル量は太字で$\bm{x},\bm{B}$のように書く。
 
 基底ベクトルの添字は、$i,j,k,...$でベクトルのデカルト座標での成分はギリシャ文字$\alpha, \beta,\gamma ...$で表すようにする。
+特に、ギリシャ文字が2つ並んでいる場合は、和を取るものとする。
 
-たとえば、ベクトル
+実験室が基底ベクトル$\bm{e}_x, \bm{e}_y,\bm{e}_z $で記述される空間とする。
+ここで、$\bm{e}_i\cdot\bm{e}_j=\delta_{ij}, (i,j=x,y,z)$である。右手系として$\bm{e}_i\times\bm{e}_j=e_{ijk}\bm{e}_k$である。
+ある一体の剛体を考える。この剛体は剛体に固定された基底ベクトル$\bm{u}_1,\bm{u}_2,\bm{u}_3$で剛体の方向を定義する。
+この場合も$\bm{u}_i\cdot\bm{u}_j=\delta_{ij}, (i,j=1,2,3)$である。
+
+微分演算子$\nabla$を用いて、ポテンシャル$U(\bm{r})$の微分から力$\bm{F}$を
+\begin{equation}
+\bm{F}=-\nabla U(\bm{r})
+\end{equation}
+と計算できるように、
+回転微分演算子$\vecR$を定義して、ポテンシャルの微分からトルクが算出されると便利である。
+剛体の方向を表す$\bm{u}_1,\bm{u}_2,\bm{u}_3$でポテンシャル$U(\bm{u}_1,\bm{u}_2,\bm{u}_3)$が表されるとすると
+\begin{equation}
+\bm{T}=-\vecR U(\bm{u}_1,\bm{u}_2,\bm{u}_3)
+\end{equation}
+とする$\vecR$を考えたい。
+微小の回転$\delta\bm{\psi}$を考えて、この微小の変化で行われるトルク$\bm{T}$による仕事と微小の回転の前後のエネルギー差から計算すれば良い。
+\begin{eqnarray}
+-\bm{T}\cdot\bm{\psi}
+&=&U(\bm{u}_1+\delta\bm{\psi}\times\bm{u}_1,\bm{u}_2+\delta\bm{\psi}\times\bm{u}_2,\bm{u}_3+\delta\bm{\psi}\times\bm{u}_3)
+-U(\bm{u}_1,\bm{u}_2,\bm{u}_3)
+\nonumber \\
+&=&\left(\delta\bm{\psi}\times\bm{u}_1\right)\cdot\frac{\partial U}{\partial \bm{u}_1}
++\left(\delta\bm{\psi}\times\bm{u}_2\right)\cdot\frac{\partial U}{\partial \bm{u}_2}
++\left(\delta\bm{\psi}\times\bm{u}_3\right)\cdot\frac{\partial U}{\partial \bm{u}_3}\nonumber\\
+&=&\delta\bm{\psi}\cdot\sum_{i=1,2,3}\bm{u}_i\times\frac{\partial U}{\partial \bm{u}_i}
+\end{eqnarray}
+となることから、
+\begin{equation}
+\vecR=\sum_{i=1,2,3}\bm{u}_i\times\frac{\partial }{\partial \bm{u}_i}
+\end{equation}
+となる。
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{理論}
 \section{基礎方程式}
 図\ref{fig:3_01_system}のように
 実験室が基底ベクトル$\bm{e}_x, \bm{e}_y,\bm{e}_z $で記述される空間とする。
-ここで、$\bm{e}_i\cdot\bm{e}_j=\delta_{ij}, (i,j=x,y,z)$である。右手系として$\bm{e}_i\times\bm{e}_j=e_{ijk}\bm{e}_k$である。
-ある一体の剛体を考える。この剛体は剛体に固定された基底ベクトル$\bm{u}_1,\bm{u}_2,\bm{u}_3$で剛体の方向を定義する。
-この場合も$\bm{u}_i\cdot\bm{u}_j=\delta_{ij}, (i,j=1,2,3)$である。
+この剛体は剛体に固定された基底ベクトル$\bm{u}_1,\bm{u}_2,\bm{u}_3$で表す。
 図\ref{fig:3_01_system}の(a)は剛体が剛体の基底ベクトルで表され、同様に、振り子も固定点のまわりで運動する剛体として計算できる。
 \begin{figure}[h]
 \centering
@@ -415,11 +445,43 @@ $t^1=t$として、
   \label{fig:4_2_2_integrator}
 \end{figure}
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- \chapter{操作例}
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{UDF説明}
-\chapter{action 説明}
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{unitParameter}
+単位をMKSA単位系で指定する。
+\begin{verbatim}
+unitParameter.length
+unitParameter.mass
+unitParameter.time
+unitParameter.ampere
+\end{verbatim}
+上から順番に、単位長さをm(メートル)、重さをkg(キログラム)、時間をs(秒)、電流をA(アンペール)で指定する。
+特に、この値を指定しなくても、シミュレーションは可能である。
+\section{body[]}
+剛体を定義する。
+ここで作った剛体がsimulationで、振り子(pendulum)や固定の物体(body)として利用される。
+\begin{verbatim}
+body[].id
+\end{verbatim}
+\verb|id|は剛体(body)のidで、simulationで利用する際に使う。
+値の重複は出来ない。
+\begin{verbatim}
+body[0].shape[]
+\end{verbatim}
+\verb|shape[]|は、剛体の形を指定する。質量や回転の中心も指定する。
+解析解の分かっているいくつかの形状か、メッシュを読み込むことが出来る。
+ここでの座標系は、粒子固定の座標系、すなわち$\bm{u}_1,\bm{u}_2,\bm{u}_3$を基底ベクトルとする座標系を用いて記述する。
+\verb|body[].shape[].center|は回転の中心を入れる。
+\verb|body[].mass|は、剛体の質量を入れる。
+\verb|body[].shape|は、
+\verb|shape[]|は、磁気ダイポールを指定する。後から説明する。
+\verb|color[]|は、色を説明する。後から説明する。
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \chapter{action 説明}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Python説明}
- 
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \end{document}
 
