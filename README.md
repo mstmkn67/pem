@@ -13,4 +13,6 @@ pem -I inputfile -O outputfile
 pem -I pendulum.udf -O pendulum_o.udf
 のようにです。
 
+udfのデータ名は変えたほうが良いかなと思っています。
+
 サンプルやマニュアルは、製作中です
