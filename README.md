@@ -24,7 +24,7 @@ https://github.com/mstmkn67/pem/blob/master/doc/manual.pdf
 0. チュートリアル https://github.com/mstmkn67/pem/blob/master/sample/0_tutorial/doc/tutorial.pdf
 - 楕円体の自由回転　https://youtu.be/UQbKPZzIAbQ
 - 磁石振り子(軸対称) https://youtu.be/UBWoQCETfzA
-- 磁石振り子(軸非対称) https://youtu.be/dPGkkhcUG7M
+- 磁石振り子(軸非対称) https://youtu.be/WzbHZ0Bf9yY
 - 磁石振り子(摩擦あり) https://youtu.be/dPGkkhcUG7M
 
 1. 単振り子 https://github.com/mstmkn67/pem/blob/master/sample/1_simplePendulum/doc/simplePendulum.pdf
