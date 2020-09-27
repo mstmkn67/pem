@@ -30,26 +30,78 @@ ma=F
 
 剛体の運動は、オイラー角あるいは、四元数を用いて計算されることが多いがPEMでは、粒子固定の直交座標系$\bm{u}_1,\bm{u}_2,\bm{u}_3$を計算していく。
 厳密解を解くなどの場合は、オイラー角は有用であるし、四元数は、分子動力学シミュレーションのような多数の多体問題を解く場合は効率が高い。
-一方で、私の感覚であるが、粒子固定の直交座標系で計算する場合は、分かりやすい。
-そのため、ここでは、粒子固定の直交座標系を用いる。
+一方で、粒子固定の直交座標系での基底を追っていく計算は、分かりやすく、ここでは、粒子固定の直交座標系を用いる。
 
 さらに、他に見られない特徴として回転微分演算子
 \begin{equation}
 \vecR =\sum_{i=1,2,3}\bm{u}_i\times\frac{\partial}{\partial \bm{u}_i}
 \end{equation}
-を用いる。
+を用いた計算を行う。
+
+従来の古典力学の計算と比べて、格段にわかりやすくなることはないと思うが、異なった見方が出来るのではないだろうか。
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{記号の説明}
 このマニュアルでは、スカラー量は、通常のフォントで$A$のように書く。
 ベクトル、テンソル量は太字で$\bm{x},\bm{B}$のように書く。
 
-基底ベクトルの添字は、$i,j,k,...$でベクトルのデカルト座標での成分はギリシャ文字$\alpha, \beta,\gamma ...$で表すようにする。
+基底ベクトルの添字は、$i,j,k,...$もしくは$a,b,c,...$でベクトルのデカルト座標での成分はギリシャ文字$\alpha, \beta,\gamma ...$で表すようにする。
 特に、ギリシャ文字が2つ並んでいる場合は、和を取るものとする。
+例えば、ベクトル$\bm{x},\bm{y}$の内積は'$\cdot$'を用いて、
+\begin{equation}
+\bm{x}\cdot\bm{y}=x_\alpha y_\alpha
+\end{equation}
+のように書く。
+外積$\times$に関しては、
+\begin{equation}
+(\bm{x}\times\bm{y})_\alpha=e_{\alpha\beta\gamma}x_{\beta}y_{\gamma}
+\end{equation}
+となる。
+ここで$e_{\alpha\beta\gamma}$は循環記号、エディントンのイプシロンなどと呼ばれる記号で、
+$\alpha,\beta,\gamma$の組が$x,y,z$の順、およびこれらの偶置換であれば$1$この奇置換であれば$-1$(たとえば$y,x,z$の順)、任意の置換で表されない場合は$0$である(たとえば$x,x,z$)。
+記号'$:$'に関しては、2階のテンソル$\bm{A},\bm{B}$の間で
+\begin{equation}
+\bm{A}:\bm{B}=A_{\alpha\beta}B_{\beta\alpha}
+\end{equation}
+となる。
+ベクトル$\bm{p},\bm{q}$が粒子固定の基底ベクトル$\bm{u}_1,\bm{u}_2,\bm{u}_3$で書けるとすると、
+\begin{equation}
+\bm{p}=\sum_{i=1,2,3}p_i\bm{u}_i
+\end{equation}
+\begin{equation}
+\bm{q}=\sum_{i=1,2,3}q_i\bm{u}_i
+\end{equation}
+となる。粒子固定の座標系で$p_i, q_i$が定義しやすい、計算しやすい場合は、この表記が便利である。
+この内積は、
+\begin{eqnarray}
+\bm{p}\cdot\bm{q}&=&\sum_{i,j=1,2,3}p_iq_j\bm{u}_i\cdot\bm{u}_j\nonumber\\
+&=&\sum_{i,j=1,2,3}p_iq_j\delta_{ij}\nonumber\\
+&=&\sum_{i=1,2,3}p_iq_i
+\end{eqnarray}
+である。
+ここで、$\delta_{ij}$はクロネッカーのデルタで、$i$と$j$が同じときは$1$それ以外は、$0$となる。
+外積に関しては、
+\begin{eqnarray}
+\bm{p}\times\bm{q}&=&\sum_{i,j=1,2,3}p_iq_j\bm{u}_i\times\bm{u}_j\nonumber\\
+&=&\sum_{i,j,k=1,2,3}p_iq_j e_{ijk}\bm{u}_k
+\end{eqnarray}
+と書ける。
 
 実験室が基底ベクトル$\bm{e}_x, \bm{e}_y,\bm{e}_z $で記述される空間とする。
-ここで、$\bm{e}_i\cdot\bm{e}_j=\delta_{ij}, (i,j=x,y,z)$である。右手系として$\bm{e}_i\times\bm{e}_j=e_{ijk}\bm{e}_k$である。
+ここで、$\bm{e}_a\cdot\bm{e}_b=\delta_{ab}, (a,b=x,y,z)$である。右手系として$\bm{e}_a\times\bm{e}_b=e_{abc}\bm{e}_c$である。
 ある一体の剛体を考える。この剛体は剛体に固定された基底ベクトル$\bm{u}_1,\bm{u}_2,\bm{u}_3$で剛体の方向を定義する。
 この場合も$\bm{u}_i\cdot\bm{u}_j=\delta_{ij}, (i,j=1,2,3)$である。
+
+ベクトル$\bm{r}$が
+\begin{equation}
+\bm{r}=\sum_{a=x,y,z}r_a\bm{e}_a=\sum_{i=1,2,3}r_i\bm{u}_i
+\end{equation}
+と基底を変えて書けることは重要である。
+$r_x,r_y,r_z$の値は、GOURMET上で描画する際には、便利であり、$r_1,r_2,r_3$の値は、粒子固定で物理量を考えるときは有効である。
+テンソル$\bm{I}$は、
+\begin{equation}
+\bm{I}=\sum_{a,b=x,y,z}I_{ab}\bm{e}_a\bm{e}_b=\sum_{i,j=1,2,3}I_{ij}\bm{u}_i\bm{u}_j
+\end{equation}
+となる。
 
 微分演算子$\nabla$を用いて、ポテンシャル$U(\bm{r})$の微分から力$\bm{F}$を
 \begin{equation}
@@ -64,20 +116,21 @@ ma=F
 とする$\vecR$を考えたい。
 微小の回転$\delta\bm{\psi}$を考えて、この微小の変化で行われるトルク$\bm{T}$による仕事と微小の回転の前後のエネルギー差から計算すれば良い。
 \begin{eqnarray}
--\bm{T}\cdot\bm{\psi}
+-\bm{T}\cdot\delta\bm{\psi}
 &=&U(\bm{u}_1+\delta\bm{\psi}\times\bm{u}_1,\bm{u}_2+\delta\bm{\psi}\times\bm{u}_2,\bm{u}_3+\delta\bm{\psi}\times\bm{u}_3)
 -U(\bm{u}_1,\bm{u}_2,\bm{u}_3)
 \nonumber \\
 &=&\left(\delta\bm{\psi}\times\bm{u}_1\right)\cdot\frac{\partial U}{\partial \bm{u}_1}
 +\left(\delta\bm{\psi}\times\bm{u}_2\right)\cdot\frac{\partial U}{\partial \bm{u}_2}
 +\left(\delta\bm{\psi}\times\bm{u}_3\right)\cdot\frac{\partial U}{\partial \bm{u}_3}\nonumber\\
-&=&\delta\bm{\psi}\cdot\sum_{i=1,2,3}\bm{u}_i\times\frac{\partial U}{\partial \bm{u}_i}
+&=&\left(\sum_{i=1,2,3}\bm{u}_i\times\frac{\partial U}{\partial \bm{u}_i}\right) \cdot\delta\bm{\psi}
 \end{eqnarray}
 となることから、
 \begin{equation}
 \vecR=\sum_{i=1,2,3}\bm{u}_i\times\frac{\partial }{\partial \bm{u}_i}
 \end{equation}
 となる。
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{理論}
 \section{基礎方程式}
@@ -471,12 +524,160 @@ body[0].shape[]
 \verb|shape[]|は、剛体の形を指定する。質量や回転の中心も指定する。
 解析解の分かっているいくつかの形状か、メッシュを読み込むことが出来る。
 ここでの座標系は、粒子固定の座標系、すなわち$\bm{u}_1,\bm{u}_2,\bm{u}_3$を基底ベクトルとする座標系を用いて記述する。
-\verb|body[].shape[].center|は回転の中心を入れる。
-\verb|body[].mass|は、剛体の質量を入れる。
-\verb|body[].shape|は、
-\verb|shape[]|は、磁気ダイポールを指定する。後から説明する。
-\verb|color[]|は、色を説明する。後から説明する。
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{verbatim}
+body[].shape[].center
+\end{verbatim}
+は回転の中心を入れる。
+
+\begin{verbatim}
+body[].shape[].mass
+\end{verbatim}
+は、この形状の質量を入力する。
+
+\begin{verbatim}
+body[].shape[].shape
+\end{verbatim}
+は形状を\verb|sphere,cylinder,ellipsoid,cuboid,mesh,line,point|から選択する。
+\verb|sphere|を選択した場合、
+\begin{verbatim}
+body[].shape[].sphere.radius
+\end{verbatim}
+で球の半径を入力する。\newline
+\verb|cylinder|を選択した場合、
+\begin{verbatim}
+body[].shape[].cylinder.radius
+\end{verbatim}
+に円筒の底面の半径、
+\begin{verbatim}
+body[].shape[].cylinder.length
+\end{verbatim}
+に円筒の半分の長さ、
+\begin{verbatim}
+body[].shape[].cylinder.d
+\end{verbatim}
+に円筒の軸方向の単位ベクトルを入れる。\newline
+\verb|ellipsoid|を選択した場合、
+\begin{verbatim}
+body[].shape[].ellipsoid.a
+body[].shape[].ellipsoid.b
+body[].shape[].ellipsoid.c
+\end{verbatim}
+には、楕円体の径を入れる。
+\begin{verbatim}
+body[].shape[].ellipsoid.da
+body[].shape[].ellipsoid.db
+\end{verbatim}
+には、径\verb|a,b|の方向の単位ベクトルを入れる。\verb|c|の方向は、\verb|a,b|の方向に垂直なため、入力を必要としていない。\newline
+\verb|cuboid|を選択した場合、
+\begin{verbatim}
+body[].shape[].cuboid.a
+body[].shape[].cuboid.b
+body[].shape[].cuboid.c
+\end{verbatim}
+には、直方体の辺の長さの半分長さを入れる。
+\begin{verbatim}
+body[].shape[].cuboid.da
+body[].shape[].cuboid.db
+\end{verbatim}
+には、長さ\verb|a,b|に対応した方向の単位ベクトルを入れる。
+\verb|c|の方向は、\verb|a,b|の方向に垂直なため、入力を必要としていない。
+\newline
+\verb|mesh|を選択した場合、三角形の連結により、表面を記述した立体を指定できる。
+\begin{verbatim}
+body[].shape[].mesh.vertex[]
+\end{verbatim}
+には、頂点の情報を入れる。
+\begin{verbatim}
+body[].shape[].mesh.vertex[].id
+\end{verbatim}
+には、頂点のidを重複しないように入れる。
+\begin{verbatim}
+body[].shape[].mesh.vertex[].position
+\end{verbatim}
+には、頂点の座標を入れる。
+\begin{verbatim}
+body[].shape[].mesh.face[]
+\end{verbatim}
+には、三角形の3つの頂点を入れて三角形の表面を指定する。
+\begin{verbatim}
+body[].shape[].mesh.face[].id
+\end{verbatim}
+には、表面のidを重複しないように入れる。
+\begin{verbatim}
+body[].shape[].mesh.face[].vertex[]
+\end{verbatim}
+には、頂点のidを配列3つ分を使って入れる。\newline
+\verb|line|を選択した場合、
+\begin{verbatim}
+body[].shape[].line.l
+\end{verbatim}
+直線の半分の長さを入れる。
+\begin{verbatim}
+body[].shape[].line.d
+\end{verbatim}
+には、直線の方向の単位ベクトルを入力する。
+\verb|point|を選択した場合は、特に何も指定しない。
+大きさのない質点である。
+
+\begin{verbatim}
+magnet[]
+\end{verbatim}
+は、磁気ダイポールを指定する。
+\begin{verbatim}
+body[].magnet[].position
+\end{verbatim}
+には磁気ダイポールの位置を指定する。
+\begin{verbatim}
+body[].magnet[].dipole
+\end{verbatim}
+には、ダイポールベクトルを入れる。
+
+\begin{verbatim}
+color[]
+\end{verbatim}
+は、色を指定する。
+この配列の要素数と\verb|body[].shape[]|の配列数が同じ場合は、
+それぞれの\verb|shape|にそれぞれの\verb|color|を指定する。
+この配列数が一つの場合は、全てこの\verb|body[]|は、この色で描画する。
+
+\begin{verbatim}
+body[].analysis
+\end{verbatim}
+には、actionの\verb|analyzer|また\verb|analyzer_all|で解析できる。
+\begin{verbatim}
+body[].analysis.mass
+body[].analysis.massCenter
+body[].analysis.inertiaMoment
+\end{verbatim}
+には、\verb|body[]|の全質量、質量中心、慣性モーメントテンソルが入る。
+\section{simulaton}
+\begin{verbatim}
+simulation.time.simulationSteps
+simulation.time.reportSteps
+simulation.time.dt
+\end{verbatim}
+には、シミュレーションの全ステップ数、出力ステップ数、微小時間の大きさを指定する。
+\begin{verbatim}
+simulation.systemSize.min
+simulation.systemSize.max
+\end{verbatim}
+では、シミュレーションシステムを直方体で表す。
+システムの最小値を示す頂点と最大値を示す頂点を指定する。
+この値は周期境界条件をかけて、磁気ダイポールの相互作用をする場合のみ意味がある。
+\begin{verbatim}
+simulation.integrator
+\end{verbatim}
+では、時間発展の数値積分方法として、4次のルンゲクッタ法\verb|4thOrderRungeKutta|かオイラー法\verb|Euler|を選ぶ。
+\begin{verbatim}
+simulation.periodicBoundaryCondition
+\end{verbatim}
+では、周期境界条件を行う場合、\verb|true|とする。
+\begin{verbatim}
+simulation.pendulum[]
+simulation.body[]
+\end{verbatim}
+では、それぞれ、回転する剛体および固定あるいは、等速直線、回転運動する剛体を
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  \chapter{action 説明}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   
