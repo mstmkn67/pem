@@ -32,11 +32,11 @@ https://github.com/mstmkn67/pem/blob/master/doc/manual.pdf
 
 2. 振り子の波(Pendulum Wave)
 - 初期角度(30度)
-線形解で考えた初期角度 https://youtu.be/z2s-MZl5GoI
-厳密解で考えた初期角度 https://youtu.be/wYixgBzghbw
+ - 線形解で考えた初期角度 https://youtu.be/z2s-MZl5GoI
+ -厳密解で考えた初期角度 https://youtu.be/wYixgBzghbw
 - 初期角度(150度)
-線形解で考えた初期角度 https://youtu.be/lLCJf_7ZDrs
-厳密解で考えた初期角度 https://youtu.be/3Yz_H9489Q0
+ - 線形解で考えた初期角度 https://youtu.be/lLCJf_7ZDrs
+ - 厳密解で考えた初期角度 https://youtu.be/3Yz_H9489Q0
 
 3. 振り子の錘
 
