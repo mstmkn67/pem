@@ -21,7 +21,7 @@ udfのデータ名は変えたほうが良いかなと思っています。
 https://github.com/mstmkn67/pem/blob/master/doc/manual.pdf
 
 ## サンプル
-０. チュートリアル https://github.com/mstmkn67/pem/blob/master/sample/0_tutorial/doc/tutorial.pdf
+0. チュートリアル https://github.com/mstmkn67/pem/blob/master/sample/0_tutorial/doc/tutorial.pdf
 - 楕円体の自由回転　https://youtu.be/UQbKPZzIAbQ
 - 磁石振り子(軸対称) https://youtu.be/UBWoQCETfzA
 - 磁石振り子(軸非対称) https://youtu.be/dPGkkhcUG7M
@@ -40,7 +40,7 @@ https://github.com/mstmkn67/pem/blob/master/doc/manual.pdf
 
 4. 球面振り子
 
-5.　差分方法
+5. 差分方法
 
 6. 外磁場によるダイポール https://github.com/mstmkn67/pem/blob/master/sample/6_externalField/doc/externalField.pdf
 -外磁場によるダイポール　https://youtu.be/LGii4xLuqyU
