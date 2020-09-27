@@ -15,45 +15,34 @@ pem -I pendulum.udf -O pendulum_o.udf
 
 udfのデータ名は変えたほうが良いかなと思っています。
 
-サンプルやマニュアルは、製作中です。
+サンプルやマニュアルは、製作中です。まだまだです。
 
 ## マニュアル
 https://github.com/mstmkn67/pem/blob/master/doc/manual.pdf
 
 ## サンプル
-０. チュートリアル
+０. チュートリアル https://github.com/mstmkn67/pem/blob/master/sample/0_tutorial/doc/tutorial.pdf
+- 楕円体の自由回転　https://youtu.be/UQbKPZzIAbQ
+- 磁石振り子(軸対称) https://youtu.be/UBWoQCETfzA
+- 磁石振り子(軸非対称) https://youtu.be/dPGkkhcUG7M
+- 磁石振り子(摩擦あり) https://youtu.be/dPGkkhcUG7M
 
-https://github.com/mstmkn67/pem/blob/master/sample/0_tutorial/doc/tutorial.pdf
-- 磁石振り子(軸対称)
-
-https://youtu.be/UBWoQCETfzA
-- 磁石振り子(軸非対称)
-
-https://youtu.be/dPGkkhcUG7M
-- 磁石振り子(摩擦あり)
-
-https://youtu.be/dPGkkhcUG7M
-
-1. 単振り子
-
-https://github.com/mstmkn67/pem/blob/master/sample/1_simplePendulum/doc/simplePendulum.pdf
-- 単振り子
-
-https://youtu.be/rppyDI8gqTg
+1. 単振り子 https://github.com/mstmkn67/pem/blob/master/sample/1_simplePendulum/doc/simplePendulum.pdf
+- 単振り子 https://youtu.be/rppyDI8gqTg
 
 2. 振り子の波(Pendulum Wave)
 - 初期角度(30度)
-線形解で考えた初期角度
-
-https://youtu.be/z2s-MZl5GoI
-厳密解で考えた初期角度
-
-https://youtu.be/wYixgBzghbw
+線形解で考えた初期角度 https://youtu.be/z2s-MZl5GoI
+厳密解で考えた初期角度 https://youtu.be/wYixgBzghbw
 - 初期角度(150度)
-線形解で考えた初期角度
+線形解で考えた初期角度 https://youtu.be/lLCJf_7ZDrs
+厳密解で考えた初期角度 https://youtu.be/3Yz_H9489Q0
 
-https://youtu.be/lLCJf_7ZDrs
-厳密解で考えた初期角度
+3. 振り子の錘
 
-https://youtu.be/3Yz_H9489Q0
+4. 球面振り子
 
+5.　差分方法
+
+6. 外磁場によるダイポール https://github.com/mstmkn67/pem/blob/master/sample/6_externalField/doc/externalField.pdf
+-外磁場によるダイポール　https://youtu.be/LGii4xLuqyU
