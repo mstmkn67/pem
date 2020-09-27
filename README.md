@@ -43,4 +43,4 @@ https://github.com/mstmkn67/pem/blob/master/doc/manual.pdf
 5. 差分方法
 
 6. 外磁場によるダイポール https://github.com/mstmkn67/pem/blob/master/sample/6_externalField/doc/externalField.pdf
--外磁場によるダイポール　https://youtu.be/LGii4xLuqyU
+- 外磁場によるダイポール　https://youtu.be/LGii4xLuqyU
