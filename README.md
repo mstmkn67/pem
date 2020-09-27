@@ -16,3 +16,5 @@ pem -I pendulum.udf -O pendulum_o.udf
 udfのデータ名は変えたほうが良いかなと思っています。
 
 サンプルやマニュアルは、製作中です
+マニュアル
+https://github.com/mstmkn67/pem/blob/master/doc/manual.pdf
