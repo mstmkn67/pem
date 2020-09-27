@@ -35,6 +35,7 @@ https://github.com/mstmkn67/pem/blob/master/doc/manual.pdf
 - 厳密解で考えた初期角度(30度) https://youtu.be/wYixgBzghbw
 - 線形解で考えた初期角度(150度) https://youtu.be/lLCJf_7ZDrs
 - 厳密解で考えた初期角度(150度) https://youtu.be/3Yz_H9489Q0
+- 円に並べた場合　https://youtu.be/dXwGEso9ABY
 
 3. 振り子の錘
 
