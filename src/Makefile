@@ -1,6 +1,12 @@
 CC = g++
 CFLAG = -c -O3 -I $(PF_FILES)/include
+ifeq ($(ARCH),linux_64)
 CCFLAG = -o pem  -L $(PF_FILES)/lib/linux_64 -lplatform -llapack
+endif
+ifeq ($(ARCH),win64)
+	CCFLAG= -o pem.exe  -L $(PF_FILES)/lib/mingw -lplatform  liblapack_win.a librefblas_win.a -lgfortran
+endif
+
 OBJECT= Vector3d.o  \
 	Timer.o gourmain.o cmdlineopts.o LapackFunctions.o \
 	Pendulum.o Body.o Frame.o ExternalField.o \
@@ -50,8 +56,19 @@ pem_driver.o : pem_driver.cpp
 	$(CC) pem_driver.cpp $(CFLAG)
 
 clean : 
+ifeq ($(ARCH),linux_64)
 	rm -f *.o pem
+endif
+ifeq ($(ARCH),win64)
+	rm -f *.o pem.exe
+endif
 
 install :
+ifeq ($(ARCH),linux_64)
 	strip pem
 	cp pem ../bin
+endif
+ifeq ($(ARCH),win64)
+	strip pem.exe
+	cp pem.exe ../bin
+endif
